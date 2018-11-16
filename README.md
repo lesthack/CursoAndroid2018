@@ -6,6 +6,6 @@ Lista de proyectos desarrollados durante el curso de Titulación Noviembre-Dicie
 
 Primer Proyecto. Reproductor de Música.
 
-![MediaPlayer](MediaPlayer.png)
+![MediaPlayer](MediaPlayer.png =300x533)
 
 
