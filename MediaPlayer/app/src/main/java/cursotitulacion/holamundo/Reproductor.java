@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.io.IOException;
+
 import static java.lang.Thread.*;
 
 public class Reproductor extends AppCompatActivity implements View.OnClickListener{
@@ -26,12 +28,11 @@ public class Reproductor extends AppCompatActivity implements View.OnClickListen
     private ImageButton next_button;
     private TextView main_title;
     private ProgressBar progress_song;
-    private ProgressTask miTask;
 
-    private String base_raw;
     private static MediaPlayer player;
     private MediaMetadataRetriever meta;
 
+    private String base_raw;
     private int[] lista_audios = {
             R.raw.cover_1,
             R.raw.cover_2,
@@ -67,16 +68,26 @@ public class Reproductor extends AppCompatActivity implements View.OnClickListen
         stop_button.setOnClickListener(this);
         back_button.setOnClickListener(this);
         next_button.setOnClickListener(this);
-        album_cover.setImageResource(lista_albums[pos]);
 
-        player = MediaPlayer.create(this, lista_audios[pos]);
-        meta = new MediaMetadataRetriever();
-        change_info();
-        (new ProgressTask()).execute(player);
     }
 
     @Override
     public void onClick(View v) {
+
+        if(player==null){
+            player = MediaPlayer.create(this, lista_audios[pos]);
+            player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    //Log.i("Dev", "Se acabo la cancion");
+                    next_button.callOnClick();
+                }
+            });
+            meta = new MediaMetadataRetriever();
+            change_info();
+            (new ProgressTask()).execute(player);
+        }
+
         switch (v.getId()){
             case R.id.play_button:
                 if(player.isPlaying()){
@@ -87,29 +98,32 @@ public class Reproductor extends AppCompatActivity implements View.OnClickListen
                     play_button.setImageResource(R.drawable.ic_pause);
                     player.start();
                 }
-                break;
+                return;
             case R.id.stop_button:
                 if(player.isPlaying()){
                     progress_song.setProgress(0);
                     player.stop();
                 }
-                break;
+                return;
             case R.id.foward_button:
-                player.stop();
                 pos = pos == lista_audios.length - 1 ? 0 : pos+1;
-                player = MediaPlayer.create(this, lista_audios[pos]);
-                change_info();
-                player.start();
                 break;
             case R.id.backward_button:
-                player.stop();
                 pos = pos == 0 ? lista_audios.length - 1 : pos-1;
-                player = MediaPlayer.create(this, lista_audios[pos]);
-                change_info();
-                player.start();
                 break;
         }
 
+        try {
+            progress_song.setProgress(0);
+            player.stop();
+            player.reset();
+            player.setDataSource(this, getDataSourceRaw(lista_audios[pos]));
+            player.prepareAsync();
+            change_info();
+            player.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -123,7 +137,7 @@ public class Reproductor extends AppCompatActivity implements View.OnClickListen
         //album_cover.setImageResource(lista_albums[pos]);
 
         // Obteniendo metadatos
-        meta.setDataSource(this, Uri.parse(base_raw + lista_audios[pos]));
+        meta.setDataSource(this, getDataSourceRaw(lista_audios[pos]));
 
         // Seteando el titulo de la cancion
         main_title.setText(
@@ -142,17 +156,21 @@ public class Reproductor extends AppCompatActivity implements View.OnClickListen
 
     }
 
+    private Uri getDataSourceRaw(int Id){
+        return Uri.parse(base_raw + Id);
+    }
+
     private class ProgressTask extends AsyncTask<MediaPlayer, Void, String> {
         private boolean running = true;
         @Override
         protected String doInBackground(MediaPlayer... players) {
-            MediaPlayer player = players[0];
             running = true;
             while(running){
-                Log.i("Dev: length = ", String.valueOf(players.length));
+                MediaPlayer player = players[0];
+                //Log.i("Dev: length = ", String.valueOf(players.length));
                 try {
                     if(player.isPlaying()){
-                        Log.i("Dev", String.valueOf(player.getCurrentPosition()));
+                        //Log.i("Dev", String.valueOf(player.getCurrentPosition()));
                         float advance_percent = (player.getCurrentPosition()*100) / player.getDuration();
                         ProgressBar p = findViewById(R.id.progress_song);
                         p.setProgress(Math.round(advance_percent));
