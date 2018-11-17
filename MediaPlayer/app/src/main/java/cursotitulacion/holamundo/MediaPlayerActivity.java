@@ -1,5 +1,6 @@
 package cursotitulacion.holamundo;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
@@ -9,6 +10,8 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -19,7 +22,7 @@ import java.io.IOException;
 
 import static java.lang.Thread.*;
 
-public class Reproductor extends AppCompatActivity implements View.OnClickListener{
+public class MediaPlayerActivity extends AppCompatActivity implements View.OnClickListener{
 
     private ImageView album_cover;
     private ImageButton play_button;
@@ -52,7 +55,7 @@ public class Reproductor extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.reproductor_layout);
+        setContentView(R.layout.activity_mediaplayer);
 
         base_raw = "android.resource://" + getApplicationContext().getPackageName() + "/raw/";
 
@@ -69,6 +72,28 @@ public class Reproductor extends AppCompatActivity implements View.OnClickListen
         back_button.setOnClickListener(this);
         next_button.setOnClickListener(this);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.item_about:
+                Intent intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.item_otro:
+                break;
+            default:
+                Log.i("Dev", "Elemento del menu seleccionado no identificado");
+        }
+        return true;
     }
 
     @Override
@@ -120,6 +145,9 @@ public class Reproductor extends AppCompatActivity implements View.OnClickListen
             player.setDataSource(this, getDataSourceRaw(lista_audios[pos]));
             player.prepareAsync();
             change_info();
+            if(!player.isPlaying()){
+                play_button.setImageResource(R.drawable.ic_pause);
+            }
             player.start();
         } catch (IOException e) {
             e.printStackTrace();
@@ -128,8 +156,10 @@ public class Reproductor extends AppCompatActivity implements View.OnClickListen
 
     @Override
     protected void onDestroy() {
-        player.stop();
-        player.release();
+        if(player!=null){
+            player.stop();
+            player.release();
+        }
         super.onDestroy();
     }
 
@@ -160,10 +190,12 @@ public class Reproductor extends AppCompatActivity implements View.OnClickListen
         return Uri.parse(base_raw + Id);
     }
 
-    private class ProgressTask extends AsyncTask<MediaPlayer, Void, String> {
+    private class ProgressTask extends AsyncTask<MediaPlayer, Float, Void> {
         private boolean running = true;
+        ProgressBar p = findViewById(R.id.progress_song);
+
         @Override
-        protected String doInBackground(MediaPlayer... players) {
+        protected Void doInBackground(MediaPlayer... players) {
             running = true;
             while(running){
                 MediaPlayer player = players[0];
@@ -172,17 +204,21 @@ public class Reproductor extends AppCompatActivity implements View.OnClickListen
                     if(player.isPlaying()){
                         //Log.i("Dev", String.valueOf(player.getCurrentPosition()));
                         float advance_percent = (player.getCurrentPosition()*100) / player.getDuration();
-                        ProgressBar p = findViewById(R.id.progress_song);
-                        p.setProgress(Math.round(advance_percent));
+                        publishProgress(advance_percent);
                     }
                     sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            return "";
+            return null;
         }
 
+        @Override
+        protected void onProgressUpdate(Float... advance){
+            super.onProgressUpdate(advance);
+            p.setProgress(Math.round(advance[0]));
+        }
 
         public void cancel() {
             running = false;

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AboutActivity">
+
+
+    <TextView
+        android:id="@+id/label_about_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_about"
+        android:layout_centerInParent="true"
+        android:textSize="20sp"
+        />
+
+    <ImageView
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:src="@mipmap/ic_avatar"
+        android:layout_above="@+id/label_about_text"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:id="@+id/label_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="@string/text_email"
+        android:layout_below="@+id/label_about_text"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:id="@+id/label_website"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="@string/text_website"
+        android:layout_below="@+id/label_email"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:id="@+id/label_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="@string/text_phone"
+        android:layout_below="@+id/label_website"
+        android:layout_centerHorizontal="true"
+        />
+
+</RelativeLayout>

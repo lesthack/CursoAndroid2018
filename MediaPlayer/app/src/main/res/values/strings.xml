@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">Mi MediaPlayer</string>
     <string name="main_title">Mi MediaPlayer</string>
+    <string name="menu_acerca_de">Acerca_de</string>
+    <string name="menu_otro">Otro</string>
+    <string name="text_about">Jorge Luis Hernandez Cantador</string>
+    <string name="text_email">lesthack@gmail.com</string>
+    <string name="text_website">http://jorgeluis.com.mx</string>
+    <string name="text_phone">01 800 123 2222</string>
+
+    <string name="title_activity_splash_screen">SplashScreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
