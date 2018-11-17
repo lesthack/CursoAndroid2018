@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Intenciones</string>
+    <string name="label_titulo">Intenciones</string>
+    <string name="button_web">Ver Pagina Web</string>
+    <string name="button_telefono">Llamar</string>
+    <string name="button_sms">Enviar SMS</string>
+    <string name="button_email">Enviar Email</string>
+    <string name="button_foto">Tomar Foto</string>
+</resources>
