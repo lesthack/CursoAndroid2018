@@ -34,6 +34,7 @@ public class MediaPlayerActivity extends AppCompatActivity implements View.OnCli
 
     private static MediaPlayer player;
     private MediaMetadataRetriever meta;
+    private ProgressTask mitask;
 
     private String base_raw;
     private int[] lista_audios = {
@@ -110,7 +111,8 @@ public class MediaPlayerActivity extends AppCompatActivity implements View.OnCli
             });
             meta = new MediaMetadataRetriever();
             change_info();
-            (new ProgressTask()).execute(player);
+            mitask = new ProgressTask();
+            mitask.execute(player);
         }
 
         switch (v.getId()){
@@ -157,8 +159,7 @@ public class MediaPlayerActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onDestroy() {
         if(player!=null){
-            player.stop();
-            player.release();
+            mitask.onCancelled();
         }
         super.onDestroy();
     }
@@ -220,8 +221,12 @@ public class MediaPlayerActivity extends AppCompatActivity implements View.OnCli
             p.setProgress(Math.round(advance[0]));
         }
 
-        public void cancel() {
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
             running = false;
+            player.stop();
+            player.release();
         }
     }
 }

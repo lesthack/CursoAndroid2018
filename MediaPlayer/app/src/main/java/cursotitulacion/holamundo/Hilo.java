@@ -8,26 +8,27 @@ import android.widget.ProgressBar;
 
 public class Hilo extends AsyncTask<ProgressBar, Integer, Void> {
 
-    SplashScreenActivity sa;
+    SplashScreenActivity context;
+    ProgressBar progress;
+    Integer p=0;
 
-    public Hilo(SplashScreenActivity sa){
-        sa = sa;
+    public Hilo(SplashScreenActivity context){
+        this.context = context;
     }
 
-    private ProgressBar progress;
+
     @Override
     protected Void doInBackground(ProgressBar... progressBars) {
         progress = progressBars[0];
-
-        for(int i=0; i<3; i++){
+        while(p<110){
             try {
-                publishProgress(i*50);
-                Thread.sleep(1000);
+                publishProgress(p);
+                Thread.sleep(100);
+                p+=10;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-
         return null;
     }
 
@@ -40,8 +41,8 @@ public class Hilo extends AsyncTask<ProgressBar, Integer, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        Intent intent = new Intent(sa, MediaPlayerActivity.class);
-        //sa.startActivity(intent);
-        //sa.finish();
+        Intent intent = new Intent(context, MediaPlayerActivity.class);
+        context.startActivity(intent);
+        context.finish();
     }
 }
