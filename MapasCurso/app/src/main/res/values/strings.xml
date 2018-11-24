@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">MapasCurso</string>
+    <string name="title_activity_mapa">Map</string>
+    <string name="menu_item_normal">Mapa Normal</string>
+    <string name="menu_item_satellite">Mapa Satellite</string>
+    <string name="menu_item_hibrido">Mapa Hibrido</string>
+    <string name="menu_item_relieve">Mapa Relieve</string>
+    <string name="hint_lat">Latitud</string>
+    <string name="hint_lon">Longitud</string>
+    <string name="button_changepos">Ubicar</string>
+    <string name="label_titulo">Asignar Coordenadas</string>
+</resources>
