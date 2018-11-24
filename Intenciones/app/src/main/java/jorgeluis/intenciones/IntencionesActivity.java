@@ -3,6 +3,7 @@ package jorgeluis.intenciones;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -10,17 +11,25 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
+import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
+import com.nightonke.boommenu.BoomButtons.SimpleCircleButton;
+import com.nightonke.boommenu.BoomMenuButton;
+import com.nightonke.boommenu.Piece.PiecePlaceEnum;
+
 import java.util.ArrayList;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class IntencionesActivity extends AppCompatActivity {
+public class IntencionesActivity extends AppCompatActivity implements OnBMClickListener{
 
     @BindView(R.id.button_web)
     TextView button_web;
@@ -34,10 +43,23 @@ public class IntencionesActivity extends AppCompatActivity {
     TextView button_foto;
     @BindView(R.id.picture)
     ImageView picture;
+    @BindView(R.id.bmb)
+    BoomMenuButton bmb;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private String telefono = "4612279093";
+    private int[] arrButtons = {
+        R.mipmap.flag_mexico,
+        R.mipmap.flag_usa,
+        R.mipmap.flag_esperanto
+    };
+    private String[] arrLangs = {
+        "es",
+        "en",
+        "eo"
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +67,18 @@ public class IntencionesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_intenciones);
 
         ButterKnife.bind(this);
+        bmb.setPiecePlaceEnum(PiecePlaceEnum.DOT_3_1);
+        bmb.setButtonPlaceEnum(ButtonPlaceEnum.SC_3_1);
 
+        for(int i=0; i<bmb.getPiecePlaceEnum().pieceNumber();i++){
+            SimpleCircleButton.Builder builder = new SimpleCircleButton.Builder()
+                    .normalImageRes(arrButtons[i])
+                    .listener(this);
+
+            bmb.addBuilder(builder);
+        }
     }
+
 
     @OnClick(R.id.button_web)
     public void openWeb() {
@@ -108,4 +140,18 @@ public class IntencionesActivity extends AppCompatActivity {
             picture.setImageBitmap(imageBitmap);
         }
     }
+
+
+    @Override
+    public void onBoomButtonClick(int index) {
+        Locale local = new Locale(arrLangs[index]);
+        Locale.setDefault(local);
+
+        Configuration conf = new Configuration();
+        conf.locale = local;
+        getResources().updateConfiguration(conf, getResources().getDisplayMetrics());
+
+        this.recreate();
+    }
+
 }

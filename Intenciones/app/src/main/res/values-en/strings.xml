@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Intents</string>
+    <string name="label_titulo">Intents (English)</string>
+    <string name="button_web">Website</string>
+    <string name="button_telefono">Call</string>
+    <string name="button_sms">Send SMS</string>
+    <string name="button_email">Send Email</string>
+    <string name="button_foto">Take a picture</string>
+</resources>

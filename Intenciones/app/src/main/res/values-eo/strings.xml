@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Intencoj</string>
+    <string name="label_titulo">Intencoj (Esperanto)</string>
+    <string name="button_web">Retejo</string>
+    <string name="button_telefono">Voku</string>
+    <string name="button_sms">Sendi mesaĝon</string>
+    <string name="button_email">Sendi retpoŝton</string>
+    <string name="button_foto">Prenu bildon</string>
+</resources>
