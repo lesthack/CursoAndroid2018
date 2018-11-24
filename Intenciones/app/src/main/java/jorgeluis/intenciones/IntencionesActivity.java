@@ -6,6 +6,8 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -29,7 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class IntencionesActivity extends AppCompatActivity implements OnBMClickListener{
+public class IntencionesActivity extends AppCompatActivity implements OnBMClickListener {
 
     @BindView(R.id.button_web)
     TextView button_web;
@@ -59,12 +61,18 @@ public class IntencionesActivity extends AppCompatActivity implements OnBMClickL
         "en",
         "eo"
     };
+    private int index;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intenciones);
+
+        if(savedInstanceState != null){
+            index = savedInstanceState.getInt("index");
+            changeLang();
+        }
 
         ButterKnife.bind(this);
         bmb.setPiecePlaceEnum(PiecePlaceEnum.DOT_3_1);
@@ -141,17 +149,26 @@ public class IntencionesActivity extends AppCompatActivity implements OnBMClickL
         }
     }
 
-
     @Override
     public void onBoomButtonClick(int index) {
+        this.index = index;
+        changeLang();
+        recreate();
+    }
+
+    public void changeLang(){
         Locale local = new Locale(arrLangs[index]);
         Locale.setDefault(local);
 
         Configuration conf = new Configuration();
         conf.locale = local;
         getResources().updateConfiguration(conf, getResources().getDisplayMetrics());
+    }
 
-        this.recreate();
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("index", index);
     }
 
 }
