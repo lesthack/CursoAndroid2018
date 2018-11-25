@@ -32,7 +32,6 @@
         android:layout_height="wrap_content"
         android:hint="@string/hint_lon"
         android:layout_margin="10dp"
-
         />
     <Button
         android:id="@+id/button_changepos"
