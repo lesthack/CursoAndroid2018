@@ -34,10 +34,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.koushikdutta.async.future.Future;
+import com.koushikdutta.ion.Ion;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.concurrent.ExecutionException;
 
 public class MapaActivity extends AppCompatActivity
         implements OnMapReadyCallback, GoogleMap.OnMapClickListener, LocationListener,
@@ -237,11 +241,19 @@ public class MapaActivity extends AppCompatActivity
             for(int i=0; i<items.length(); i++){
                 JSONObject itemJson = items.getJSONObject(i);
                 LatLng marcalatlng = new LatLng(itemJson.getJSONArray("position").getDouble(0), itemJson.getJSONArray("position").getDouble(1));
+
+                String url_icon = itemJson.getString("icon");
+                Bitmap icon = Ion.with(this).load(url_icon).withBitmap().asBitmap().get();
+
                 arrMarcas[i] = mMap.addMarker(
-                  new MarkerOptions().position(marcalatlng).title(itemJson.getString("title"))
+                  new MarkerOptions().position(marcalatlng).title(itemJson.getString("title")).icon(BitmapDescriptorFactory.fromBitmap(icon))
                 );
             }
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
             e.printStackTrace();
         }
     }
