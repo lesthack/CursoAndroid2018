@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/hint_lat"
         android:layout_margin="10dp"
-
+        android:text="20.4865604"
         />
     <EditText
         android:id="@+id/edittext_lon"
@@ -32,6 +32,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/hint_lon"
         android:layout_margin="10dp"
+        android:text="-100.9577643"
         />
     <Button
         android:id="@+id/button_changepos"
