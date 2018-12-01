@@ -61,7 +61,7 @@ public class IntencionesActivity extends AppCompatActivity implements OnBMClickL
         "en",
         "eo"
     };
-    private int index;
+    static private int index;
 
 
     @Override
