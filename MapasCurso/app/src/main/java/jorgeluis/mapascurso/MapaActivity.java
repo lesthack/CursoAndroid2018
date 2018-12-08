@@ -45,7 +45,8 @@ import java.util.concurrent.ExecutionException;
 
 public class MapaActivity extends AppCompatActivity
         implements OnMapReadyCallback, GoogleMap.OnMapClickListener, LocationListener,
-        Response.Listener<String>, Response.ErrorListener {
+        Response.Listener<String>, Response.ErrorListener,
+        GoogleMap.OnMarkerClickListener{
 
     private GoogleMap mMap;
     private LocationManager locationManager;
@@ -98,7 +99,7 @@ public class MapaActivity extends AppCompatActivity
         }
 
         mMap.setOnMapClickListener(this);
-
+        mMap.setOnMarkerClickListener(this);
         miPosicion();
 
         //mMap.setMapStyle(new MapStyleOptions(getResources().getString(R.string.style_json)));
@@ -131,7 +132,11 @@ public class MapaActivity extends AppCompatActivity
 
     @Override
     public void onMapClick(LatLng pos) {
+        arrMarcas = null;
+        mMap.clear();
+        latlng = pos;
         crearMarca(pos);
+        lugaresCercanos();
     }
 
     private void crearMarca(LatLng pos){
@@ -246,8 +251,12 @@ public class MapaActivity extends AppCompatActivity
                 Bitmap icon = Ion.with(this).load(url_icon).withBitmap().asBitmap().get();
 
                 arrMarcas[i] = mMap.addMarker(
-                  new MarkerOptions().position(marcalatlng).title(itemJson.getString("title")).icon(BitmapDescriptorFactory.fromBitmap(icon))
+                  new MarkerOptions()
+                          .position(marcalatlng)
+                          .title(itemJson.getString("title"))
+                          .icon(BitmapDescriptorFactory.fromBitmap(icon))
                 );
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -256,6 +265,12 @@ public class MapaActivity extends AppCompatActivity
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        marker.remove();
+        return false;
     }
 }
 
