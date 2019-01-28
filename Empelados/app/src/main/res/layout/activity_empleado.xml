@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EmpleadoActivity"
+    android:padding="10dp"
+    >
+
+    <TextView
+        android:id="@+id/label_empleado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/empleado_label"
+        android:textAlignment="center"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="20dp"
+        android:textStyle="bold"
+        android:textSize="28dp"
+        />
+
+    <EditText
+        android:id="@+id/edtEmpNom"
+        android:hint="Nombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_below="@id/label_empleado"
+        />
+    <EditText
+        android:id="@+id/edtEmpApPat"
+        android:hint="Apellido Paterno"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_below="@+id/edtEmpNom"
+        />
+    <EditText
+        android:id="@+id/edtEmpApMat"
+        android:hint="Apellido Materno"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_below="@+id/edtEmpApPat"
+        />
+    <EditText
+        android:id="@+id/edtEmpTel"
+        android:hint="Telefono"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:layout_below="@id/edtEmpApMat"
+        android:textAlignment="center"
+        />
+    <EditText
+        android:id="@+id/edtEmpEmail"
+        android:hint="Email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edtEmpTel"
+        android:inputType="textEmailAddress"
+        android:textAlignment="center"
+        />
+    <Spinner
+        android:id="@+id/spnDepartamentos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edtEmpEmail"
+        ></Spinner>
+
+    <Button
+        android:id="@+id/btnSaveEmp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_empleado_save"
+        android:layout_below="@id/spnDepartamentos"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        />
+</RelativeLayout>
